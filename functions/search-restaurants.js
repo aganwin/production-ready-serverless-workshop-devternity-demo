@@ -3,6 +3,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient()
 
 const defaultResults = process.env.defaultResults || 8
 const tableName = process.env.restaurants_table
+const wrap = require('../lib/wrapper')
 
 const findRestaurantsByTheme = async (theme, count) => {
   const req = {
@@ -16,7 +17,7 @@ const findRestaurantsByTheme = async (theme, count) => {
   return resp.Items
 }
 
-module.exports.handler = async (event, context) => {
+module.exports.handler = wrap(async (event, context) => {
   const req = JSON.parse(event.body)
   const theme = req.theme
   const restaurants = await findRestaurantsByTheme(theme, defaultResults)
@@ -26,4 +27,4 @@ module.exports.handler = async (event, context) => {
   }
 
   return response
-}
+})

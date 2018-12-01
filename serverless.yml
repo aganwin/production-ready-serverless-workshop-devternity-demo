@@ -11,6 +11,8 @@ provider:
   region: us-west-2
   tags:
     TEAM: test
+  environment:
+    log_level: ${self:custom.logLevel.${self:custom.stage}, self:custom.logLevel.default}
 
 
 
@@ -148,3 +150,9 @@ resources:
         Protocol: email
         TopicArn: 
           Ref: restaurantNotificationTopic            
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  logLevel:
+    prod: INFO
+    default: DEBUG
